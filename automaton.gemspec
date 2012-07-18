@@ -1,5 +1,7 @@
 require File.expand_path("../lib/automaton/version", __FILE__)
 
+ENABLE_C_EXTENSION = false
+
 Gem::Specification.new do |s|
 	s.name        = "automaton"
 	s.version     = Automaton::VERSION
@@ -23,15 +25,15 @@ EOS
 	# If you have other dependencies, add them here
 	# s.add_dependency "another", "~> 1.2"
 	
-	# If you need to check in files that aren't .rb files, add them here
-	#~ s.files        = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md"]
-	s.files        = Dir["{lib}/**/*.rb", "bin/*", "{ext}/**/*.{c,h,rb}", "LICENSE", "*.md"]
+	if ENABLE_C_EXTENSION
+		s.files        = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md"]
+		s.extensions = ['ext/automaton/extconf.rb']
+	else
+		s.files = Dir["{lib}/**/*.rb", "bin/*", "{ext}/**/*.{c,h,rb}", "LICENSE", "*.md"]
+	end
 	puts s.files
 	
 	s.require_path = 'lib'
-	
-	# If you have C extensions, uncomment this line
-	#~ s.extensions = ['ext/automaton/extconf.rb']
 	
 	# If you need an executable, add it here
 	# s.executables = ["newgem"]
